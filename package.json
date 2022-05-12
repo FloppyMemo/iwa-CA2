@@ -4,7 +4,7 @@
   "description": "This is Deployed version of CA1",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon -r dotenv/config app.js",
+    "start": "start -r dotenv/config app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
