@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students - CRUD</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>New Student</h1>
+        <form action="/students" method="POST">
+            <label for="name">Student Name:</label>
+            <input type="text" name='name' class = 'form-control'>
+            <label for="degree">Student Degree: </label>
+            <input type="text" name='degree' class = 'form-control'>
+            <label for="CGPA">Student CGPA: </label>
+            <input type="text" name='CGPA' class = 'form-control'><br>
+            <button type='submit' class='btn btn-primary' onclick="validate()">Submit</button>
+            <button class='btn btn-primary' onclick="event.preventDefault();location.href='\\'">Go Back</button>
+        </form>
+    </div>
+    <script>
+    function validate()
+    { 
+        // gets form data and validates it...
+        name = document.getElementsByName('name')[0].value
+        degree = document.getElementsByName('degree')[0].value
+        CGPA = document.getElementsByName('CGPA')[0].value
+        name = name.split(' ')
+        debugger
+        if(name.length<=1)
+        {
+            alert("Please enter your full name!!");
+            event.preventDefault();
+            return;
+        }
+        if(isNaN(parseFloat(CGPA))){
+            alert("CGPA must be a number!!");
+            event.preventDefault();
+            return;
+        }
+    }
+    </script>
+</body>
+</html>

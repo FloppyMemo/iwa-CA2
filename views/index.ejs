@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students - CRUD</title>
+    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Students</h1>
+        <a href="/new" class = 'btn btn-primary'>New Student</a>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Degree</th>
+                <th scope="col">CGPA</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody id='table-body'>
+            
+            </tbody>
+        </table>
+    </div>
+    <script>
+        $(document).ready(function()
+        { // A function to populate the table by quering students API..
+            tbody = document.getElementById('table-body')
+            $.get({
+                url: '/students',
+                success:function(response)
+                {
+                    students = response.students
+                    for(var i in students){
+                        
+                        tbody.innerHTML += `<tr><th scope=\"row\">${students[i].id}</th><td>${students[i].name}</td><td>${students[i].degree}</td><td>${students[i].CGPA}</td><td><a href='' onclick='event.preventDefault();deleteStudent(${students[i].id})' class = 'btn btn-primary'>Delete</a></td></tr>`
+                    }
+                }
+            })
+        })
+        function deleteStudent(id)
+        {
+            // A function to delete student via API using its ID only.
+            if(!confirm("Are you sure?"))
+            {
+                return
+            }
+            $.ajax({
+                url: '/students',
+                type: 'delete',
+                data: {id:id},
+                success: function(res){
+                    if (res.msg == 'Success'){
+                        alert("Deleted Successfully!!")
+                    }
+                    else{
+                        alert("Deletion Unsuccessful!!")
+                    }
+                }
+            })
+            location.reload();
+        }
+    </script>
+</body>
+</html>
