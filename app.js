@@ -47,7 +47,7 @@ app.post("/students", async(req, res) => {
     name:req.body.name,
     degree:req.body.degree,
     cgpa:req.body.cgpa,
-    id:id+1
+    id:id
   })
   student.save().then(result=>res.redirect("/")).catch(err=>res.send("Error occured"))
 });
