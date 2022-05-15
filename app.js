@@ -17,7 +17,7 @@ app.set("view engine", "ejs");              // Using EJS as our view engine
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors())
 
-mongoose.connect(db_url).then(()=>{
+mongoose.connect(db_url, { useNewUrlParser: true, useUnifiedTopology: true  }).then(()=>{
     console.log(`Connected to database`)
 
 }).catch(error=>{
@@ -52,15 +52,10 @@ app.post("/students", async(req, res) => {
   student.save().then(result=>res.redirect("/")).catch(err=>res.send("Error occured"))
 });
 
-app.delete("/students", async(req, res) => {
-
+app.delete("/students",(req, res) => {
   const id = req.body.id;
-  await Student.deleteOne({id:id},(err,resp)=>{
-    if(resp)
-      res.redirect('/')  
-  })
-  
-  res.send({ msg: "Failure" });
+  Student.deleteOne({id:id}).then(result=>res.redirect('/')).catch(err=>res.send('Error occured'))
+
 });
 
 app.listen(port, () => console.log(`Server Listening on Port ${port}!!`));
