@@ -11,8 +11,9 @@ const mongoose=require('mongoose')
 const Student=require('./models/studentModel')
 app.set('views', path.join(__dirname, 'views'))
 
-const db_url=process.env.DB_URL
-const port=process.env.PORT || 5666
+const {db_url, port}=require('./config')
+// const db_url=process.env.DB_URL
+// const port=process.env.PORT || 5666
 
 app.set("view engine", "ejs");              // Using EJS as our view engine
 app.use(bodyParser.urlencoded({extended:true}));
