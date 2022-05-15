@@ -2,6 +2,7 @@ const fs = require("fs");                   // Node Module for File Handling
 const bodyParser = require("body-parser");  // Node Module for getting query params
 const express = require("express");         // Node Module for Routing
 const app = express();
+require('dotenv').config()
 
 const cors=require('cors')
 const path = require('path')
@@ -10,7 +11,7 @@ const mongoose=require('mongoose')
 const Student=require('./models/studentModel')
 app.set('views', path.join(__dirname, 'views'))
 
-const db_url="mongodb+srv://iwa-ca2-app:iwa-ca2-app@iwa-ca2-cluster.1kkek.mongodb.net/iwa-ca2-db?retryWrites=true&w=majority"
+const db_url=process.env.DB_URL
 const port=process.env.PORT || 5666
 
 app.set("view engine", "ejs");              // Using EJS as our view engine
