@@ -11,7 +11,7 @@ const Student=require('./models/studentModel')
 app.set('views', path.join(__dirname, 'views'))
 
 const db_url="mongodb+srv://iwa-ca2-app:iwa-ca2-app@iwa-ca2-cluster.1kkek.mongodb.net/iwa-ca2-db?retryWrites=true&w=majority"
-const port=3000
+const port=process.env.PORT || 5666
 
 app.set("view engine", "ejs");              // Using EJS as our view engine
 app.use(bodyParser.urlencoded());
