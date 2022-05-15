@@ -6,10 +6,12 @@ const app = express();
 const cors=require('cors')
 const path = require('path')
 const mongoose=require('mongoose')
-const {port, db_url}=require('./config')
 
 const Student=require('./models/studentModel')
 app.set('views', path.join(__dirname, 'views'))
+
+const db_url="mongodb+srv://iwa-ca2-app:iwa-ca2-app@iwa-ca2-cluster.1kkek.mongodb.net/iwa-ca2-db?retryWrites=true&w=majority"
+const port=3000
 
 app.set("view engine", "ejs");              // Using EJS as our view engine
 app.use(bodyParser.urlencoded());
