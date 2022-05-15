@@ -55,9 +55,8 @@ app.post("/students", async(req, res) => {
 app.delete("/students", async(req, res) => {
 
   const id = req.body.id;
-  console.log(id)
   await Student.deleteOne({id:id},(err,resp)=>{
-    if(res)
+    if(resp)
       res.redirect('/')  
   })
   
