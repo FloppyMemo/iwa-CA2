@@ -1,17 +1,19 @@
-const fs = require("fs"); // Node Module for File Handling
-const bodyParser = require("body-parser"); // Node Module for getting query params
-const express = require("express"); // Node Module for Routing
+const fs = require("fs");                   // Node Module for File Handling
+const bodyParser = require("body-parser");  // Node Module for getting query params
+const express = require("express");         // Node Module for Routing
 const app = express();
+
 const cors=require('cors')
+const path = require('path')
 const mongoose=require('mongoose')
+const {port, db_url}=require('./config')
 
 const Student=require('./models/studentModel')
+app.set('views', path.join(__dirname, 'views'))
 
-app.set("view engine", "ejs"); // Using EJS as our view engine
+app.set("view engine", "ejs");              // Using EJS as our view engine
 app.use(bodyParser.urlencoded());
 app.use(cors())
-
-const {port, db_url}=require('./config')
 
 mongoose.connect(db_url).then(()=>{
     console.log(`Connected to database`)
@@ -36,6 +38,7 @@ app.get("/students",(req, res) => {
     Student.find().then(result=>res.send(result));
     // res.send({students:students.json()}); // sending data of all students in json format to client.
 });
+
 app.post("/students", (req, res) => {
   // accepts params as body and assigns ID to the student and adds the student to the students JSON object
   const student = req.body;
@@ -57,6 +60,7 @@ app.post("/students", (req, res) => {
     res.redirect("/");
   });
 });
+
 app.delete("/students", (req, res) => {
   // gets the user id and finds the user in the students json object
   id = req.body.id;
