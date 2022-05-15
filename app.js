@@ -14,7 +14,7 @@ const db_url="mongodb+srv://iwa-ca2-app:iwa-ca2-app@iwa-ca2-cluster.1kkek.mongod
 const port=process.env.PORT || 5666
 
 app.set("view engine", "ejs");              // Using EJS as our view engine
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors())
 
 mongoose.connect(db_url).then(()=>{
@@ -24,10 +24,9 @@ mongoose.connect(db_url).then(()=>{
     console.log(`Could not connect to database`)
 })
 
-//let students =[]// JSON.parse(fs.readFileSync("data.json")); // Getting all the students at once in the beginning...
 
 app.get("/", async(req, res) => {
-  console.log("Ok")  
+
   res.render("index"); // displaying the all Students page
 });
 
@@ -38,49 +37,30 @@ app.get("/new", (req, res) => {
 app.get("/students",(req, res) => {
 
     Student.find().then(result=>res.send(result));
-    // res.send({students:students.json()}); // sending data of all students in json format to client.
 });
 
-app.post("/students", (req, res) => {
+app.post("/students", async(req, res) => {
   // accepts params as body and assigns ID to the student and adds the student to the students JSON object
-  const student = req.body;
-  console.log(student)
-  students.students.push(student);
-  len = students.students.length;
-  if (len == 1) {
-    students.students[len - 1].id = 1;
-  } else {
-    students.students[len - 1].id = students.students[len - 2].id + 1;
-  }
-  // Convert the students json object to string and overwrites it to data.json
-  var jsonContent = JSON.stringify(students);
-  fs.writeFile("data.json", jsonContent, "utf8", function (err) {
-    if (err) {
-      console.log("An error occured while writing JSON Object to File.");
-      return res.send({ msg: "Failure!!" });
-    }
-    res.redirect("/");
-  });
+
+  let id=await Student.countDocuments({})
+  const student=new Student({
+    name:req.body.name,
+    degree:req.body.degree,
+    cgpa:req.body.cgpa,
+    id:id+1
+  })
+  student.save().then(result=>res.redirect("/")).catch(err=>res.send("Error occured"))
 });
 
-app.delete("/students", (req, res) => {
-  // gets the user id and finds the user in the students json object
-  id = req.body.id;
-  for (var i in students.students) {
-    if (students.students[i].id == id) {
-      students.students.splice(i, 1); // deletes user upon finding
-      // converts the students json object to string and overwrites it to data.json
-      var jsonContent = JSON.stringify(students);
-      fs.writeFile("data.json", jsonContent, "utf8", function (err) {
-        if (err) {
-          console.log("An error occured while writing JSON Object to File.");
-          return res.send({ msg: "Failure!!" });
-        }
-      });
-      res.send({ msg: "Success" });
-      return;
-    }
-  }
+app.delete("/students", async(req, res) => {
+
+  const id = req.body.id;
+  console.log(id)
+  await Student.deleteOne({id:id},(err,resp)=>{
+    if(res)
+      res.redirect('/')  
+  })
+  
   res.send({ msg: "Failure" });
 });
 
