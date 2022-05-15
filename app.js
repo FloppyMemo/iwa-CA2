@@ -42,12 +42,14 @@ app.get("/students",(req, res) => {
 app.post("/students", async(req, res) => {
   // accepts params as body and assigns ID to the student and adds the student to the students JSON object
 
-  let id=await Student.countDocuments({})
+  let record=await Student.find({},{id:1,_id:0}).sort({id:-1}).limit(1)
+  console.log(record[0].id)
+  let id=record[0].id;
   const student=new Student({
     name:req.body.name,
     degree:req.body.degree,
     cgpa:req.body.cgpa,
-    id:id
+    id:id+1
   })
   student.save().then(result=>res.redirect("/")).catch(err=>res.send("Error occured"))
 });
